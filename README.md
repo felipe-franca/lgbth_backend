@@ -3,7 +3,6 @@ This project was generated in [NodeJS](https://nodejs.org/en) in version 16.18.0
 > The project uses [TypeScript](https://www.typescriptlang.org/) !
 
 ## Starting Project
-___
 After install [NPM](https://docs.npmjs.com/) package manager run:
 ```bash
 npm install
@@ -15,7 +14,6 @@ yarn install
 <br>
 
 ### Create dotenv file
-___
 Create dotenv(.env) file that contains the *secrets* and *environment variables* in the root of the project:
 ```
 touch .env
@@ -38,7 +36,6 @@ FIREBASE_APPID="<appId>" # (mandatory) firestore configuration appId
 <br>
 
 ## Starting Dev
-___
 To start the project in development mode run:
 ```bash
 npm run start:dev
@@ -50,7 +47,6 @@ yarn start:dev
 <br>
 
 ## Building
-___
 The build directory is called dist. To build the project run:
 
 ```bash
@@ -61,7 +57,6 @@ yarn build
 ```
 
 ## Project Structure
-___
 ```bash
 root-dir
 ├── .env # Secrets file
