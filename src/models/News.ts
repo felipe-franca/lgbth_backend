@@ -7,7 +7,7 @@ import Post from './Post';
  * @extends Post
  */
 export default class News extends Post {
-  constructor(title: string, description: string, argument: string, createdAt: Date) {
+  constructor(title: string, description: string, argument: string, createdAt: string) {
     super(title, description, argument, createdAt);
   }
 }

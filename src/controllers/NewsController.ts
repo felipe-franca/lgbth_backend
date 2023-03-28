@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
-import News from '../models/News';
+import NewsDAO from '../dao/NewsDAO';
 
 class NewsController {
   async getLastNews(req: Request, res: Response): Promise<Object> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const news: News = new News('Title', 'description', 'This is an argument', new Date());
-        return resolve(res.send(news.getStructured()));
-      }, 1000);
-    });
+    const newsDao = new NewsDAO();
+    const news = await newsDao.getLastestNews();
+
+    return res.send(news);
   }
 }
 

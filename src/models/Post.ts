@@ -7,9 +7,9 @@ export default abstract class Post {
   protected title: string;
   protected description: string;
   protected argument: string;
-  protected createdAt: Date;
+  protected createdAt: string;
 
-  constructor(title: string, description: string, argument: string, createdAt: Date) {
+  constructor(title: string, description: string, argument: string, createdAt: string) {
     this.title = title;
     this.description = description;
     this.argument = argument;
@@ -28,7 +28,7 @@ export default abstract class Post {
     return this.argument;
   }
 
-  public getCreatedAt(): Date {
+  public getCreatedAt(): string {
     return this.createdAt;
   }
 
