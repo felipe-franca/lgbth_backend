@@ -12,6 +12,7 @@ class AppControoller {
 
   config (app: express.Application): void {
     app.use(json());
+    app.use(express.urlencoded({ extended: true }));
   }
 
   setupRoutes (app: express.Application): void {

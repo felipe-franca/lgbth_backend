@@ -1,6 +1,6 @@
 import { type User } from '@prisma/client';
 import PrismaClient from '../database/PrismaClient';
-import type CreateUserType from '../types/CreateUserType';
+import { type CreateUserType, type UpdateUserType } from '../types/UserType';
 
 export default class UserDAO {
   public async get (id: number): Promise<User | null> {
@@ -11,12 +11,21 @@ export default class UserDAO {
     });
   }
 
-  public async create ({ name, email, password }: CreateUserType): Promise<User> {
+  public async create (data: CreateUserType): Promise<User> {
     return await PrismaClient.user.create({
+      data
+    });
+  }
+
+  public async update ({ id, age, avatar, birthDate }: UpdateUserType): Promise<User> {
+    return await PrismaClient.user.update({
+      where: {
+        id
+      },
       data: {
-        name,
-        email,
-        password
+        age,
+        avatar,
+        birth_date: birthDate
       }
     });
   }

@@ -5,12 +5,13 @@
   "author": "felipe-franca <felipe.paulino57@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts",
+    "start:dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --watch src --exit-child src/server",
     "build": "tsc",
     "test": "vitest"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.7",
     "@types/node": "^20.1.4",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
@@ -29,6 +30,7 @@
     "@prisma/client": "4.14.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
     "uuid": "^9.0.0"
   }
 }
