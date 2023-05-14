@@ -1,21 +1,21 @@
-import express, { Application, json } from 'express';
-import NewsRouter from './routes/api/NewsRouter';
+import express, { type Application, json } from 'express';
+import UserRouter from './routes/api/UserRouter';
 
 class AppControoller {
-  app: Application
+  app: Application;
 
-  constructor() {
+  constructor () {
     this.app = express();
     this.config(this.app);
     this.setupRoutes(this.app);
   }
 
-  config(app: express.Application): void {
+  config (app: express.Application): void {
     app.use(json());
   }
 
-  setupRoutes(app: express.Application): void {
-    app.use('/news', NewsRouter);
+  setupRoutes (app: express.Application): void {
+    app.use('/user', UserRouter);
   }
 }
 
