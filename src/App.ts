@@ -11,7 +11,7 @@ class AppControoller {
   }
 
   config (app: express.Application): void {
-    app.use(json());
+    app.use(json({ limit: '50mb' }));
     app.use(express.urlencoded({ extended: true }));
   }
 

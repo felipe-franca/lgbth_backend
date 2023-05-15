@@ -1,14 +1,14 @@
 
-export interface UpdateUserType {
+export interface UpdateUserType extends CreateUserType {
   id: number
   age: number | undefined
   birthDate: Date | undefined
-  avatar: Buffer | undefined
+  avatar: string | null
 };
 
 export interface CreateUserType {
   name: string
   email: string
   password: string
-  avatar: Buffer | undefined
+  avatar: string | null
 }

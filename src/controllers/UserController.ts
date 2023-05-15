@@ -1,36 +1,29 @@
-import type { Response, Request } from 'express';
+import { type User } from '@prisma/client';
+import type { Request, Response } from 'express';
 import UserDAO from '../dao/UserDAO';
 import { type CreateUserType, type UpdateUserType } from '../types/UserType';
-import multer from 'multer';
-import MulterConfig from '../utils/MulterConfig';
 
+interface UserResponseType {
+  id: string | number
+  name: string
+  email: string
+  age: number | string
+  avatar: string | undefined | null
+  birthDate: string | undefined | null
+}
 class UserController {
-  private readonly storage = multer.memoryStorage();
-
   public async createUser (req: Request, res: Response): Promise<Response | undefined> {
     try {
-      const multerConfig = new MulterConfig('avatar');
+      const data: CreateUserType = req.body;
+      const userDao = new UserDAO();
 
-      multerConfig.getMiddleware()(req, res, async (err) => {
-        if (err) return res.status(400).json({ error: err.message });
+      const result = await userDao.create(data);
 
-        const { name, email, password } = req.body;
-        const file = req.file?.buffer;
+      const userResponseData: UserResponseType = this.getParsedResponse(result);
 
-        const userDao = new UserDAO();
-
-        const data: CreateUserType = {
-          name,
-          email,
-          password,
-          avatar: file
-        };
-
-        const result = await userDao.create(data);
-
-        return res.send(result);
-      });
+      return res.send(userResponseData);
     } catch (err) {
+      console.log(err);
       return res.status(500).send();
     }
   }
@@ -42,7 +35,10 @@ class UserController {
 
       const result = await userDao.get(Number(id));
 
-      return res.send(result);
+      if (result) {
+        const userResponseData: UserResponseType = this.getParsedResponse(result);
+        return res.send(userResponseData);
+      } else throw new Error();
     } catch (err) {
       console.log(err);
       return res.status(500).send();
@@ -51,31 +47,33 @@ class UserController {
 
   public async updateUser (req: Request, res: Response): Promise<Response | undefined> {
     try {
-      const multerConfig = new MulterConfig('avatar');
+      const data: UpdateUserType = req.body;
+      const userDao = new UserDAO();
 
-      multerConfig.getMiddleware()(req, res, async (err) => {
-        if (err) return res.status(400).json({ error: err.message });
+      if (data.birthDate) {
+        data.birthDate = new Date(data.birthDate);
+      }
 
-        const { age, birthDate, id } = req.body;
-        const file = req.file?.buffer;
+      const result = await userDao.update(data);
 
-        const userDao = new UserDAO();
+      const userResponseData: UserResponseType = this.getParsedResponse(result);
 
-        const data: UpdateUserType = {
-          id: Number(id),
-          age: Number(age),
-          birthDate: new Date(birthDate),
-          avatar: file
-        };
-
-        const result = await userDao.update(data);
-
-        return res.send(result);
-      });
+      return res.send(userResponseData);
     } catch (err) {
       console.log(err);
       return res.status(500).send();
     }
+  }
+
+  public getParsedResponse (user: User): UserResponseType {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      age: Number(user.age),
+      avatar: user.avatar,
+      birthDate: user.birth_date?.toISOString()
+    };
   }
 }
 
