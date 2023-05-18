@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  name       String
-  email      String    @unique
-  password   String
-  age        Int?      @db.SmallInt
-  birth_date DateTime? @db.Date
-  avatar     String?   @db.LongText
-  created_at DateTime  @default(now())
-  updatet_at DateTime  @updatedAt
-  Address    Address[]
+  id                Int                 @id @default(autoincrement())
+  name              String
+  email             String              @unique
+  password          String
+  age               Int?                @db.SmallInt
+  birth_date        DateTime?           @db.Date
+  avatar            String?             @db.LongText
+  created_at        DateTime            @default(now())
+  updatet_at        DateTime            @updatedAt
+  Address           Address[]
+  UserFavoritePosts UserFavoritePosts[]
 
   @@map("users")
 }
@@ -52,4 +53,39 @@ model State {
   City City[]
 
   @@map("states")
+}
+
+model UsefullyPhone {
+  id          Int    @id @default(autoincrement())
+  number      String @db.VarChar(14)
+  description String @db.VarChar(40)
+
+  @@map("usefully_phones")
+}
+
+model Post {
+  id                Int                 @id @default(autoincrement())
+  banner            String              @db.LongText
+  title             String              @db.VarChar(50)
+  resume            String              @db.Text
+  description       String              @db.VarChar(255)
+  short_description String              @db.Text
+  type              String              @db.VarChar(10)
+  category          String              @db.VarChar(15)
+  created_at        DateTime            @default(now())
+  updatet_at        DateTime            @updatedAt
+  UserFavoritePosts UserFavoritePosts[]
+
+  @@map("posts")
+}
+
+model UserFavoritePosts {
+  id      Int  @id @default(autoincrement())
+  user    User @relation(fields: [user_id], references: [id])
+  user_id Int
+  post    Post @relation(fields: [post_id], references: [id])
+  post_id Int
+  created_at        DateTime            @default(now())
+
+  @@map("user_favorite_posts")
 }
