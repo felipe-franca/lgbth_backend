@@ -29,4 +29,12 @@ export default class UserDAO {
       }
     });
   }
+
+  public async getByEmail (email: string): Promise<User | null> {
+    return await PrismaClient.user.findFirst({
+      where: {
+        email
+      }
+    });
+  }
 }

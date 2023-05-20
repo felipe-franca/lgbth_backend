@@ -1,7 +1,8 @@
 import { type User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import UserDAO from '../dao/UserDAO';
-import { type CreateUserType, type UpdateUserType } from '../types/UserType';
+import { type CredentialsType, type CreateUserType, type UpdateUserType } from '../types/UserType';
+import { BadRequestException, InternalServerError, InvalidCredentialsException, NotFoundException } from '../utils/errors/Exceptions';
 
 interface UserResponseType {
   id: string | number
@@ -35,13 +36,20 @@ class UserController {
 
       const result = await userDao.get(Number(id));
 
-      if (result) {
-        const userResponseData: UserResponseType = this.getParsedResponse(result);
-        return res.send(userResponseData);
-      } else throw new Error();
+      if (!result) throw new NotFoundException('Usuário não encontrado');
+
+      const userResponseData: UserResponseType = this.getParsedResponse(result);
+
+      return res.send(userResponseData);
     } catch (err) {
       console.log(err);
-      return res.status(500).send();
+      if (err instanceof NotFoundException) {
+        return res.status(err.statusCode).json(err.getErrorResponse());
+      }
+
+      const defaultError = new InternalServerError(err);
+
+      return res.status(defaultError.statusCode).json(defaultError.getErrorResponse());
     }
   }
 
@@ -62,6 +70,33 @@ class UserController {
     } catch (err) {
       console.log(err);
       return res.status(500).send();
+    }
+  }
+
+  public async sigIn (req: Request, res: Response): Promise<Response | undefined> {
+    const data: CredentialsType = req.body;
+
+    try {
+      if (!data.email || !data.password) throw new BadRequestException('Email ou senha invalidos');
+
+      const userDao = new UserDAO();
+      const result = await userDao.getByEmail(data.email);
+
+      if (!result) throw new NotFoundException('Usuario não encontrado');
+
+      if (data.password !== result.password) throw new InvalidCredentialsException('Email ou senha Invalidos');
+
+      return res.send(result);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        res.status(err.statusCode).json(err.getErrorResponse());
+      } else if (err instanceof BadRequestException) {
+        return res.status(err.statusCode).json(err.getErrorResponse());
+      } else if (err instanceof InvalidCredentialsException) {
+        return res.status(err.statusCode).json(err.getErrorResponse());
+      } else {
+        return res.status(500).send({ erroCode: 0, message: 'Internal Server Error' });
+      }
     }
   }
 

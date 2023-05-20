@@ -12,3 +12,8 @@ export interface CreateUserType {
   password: string
   avatar: string | null
 }
+
+export interface CredentialsType {
+  email: string
+  password: string
+}
