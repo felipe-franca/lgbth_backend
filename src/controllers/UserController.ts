@@ -77,14 +77,14 @@ class UserController {
     const data: CredentialsType = req.body;
 
     try {
-      if (!data.email || !data.password) throw new BadRequestException('Email ou senha invalidos');
+      if (!data.email || !data.password) throw new BadRequestException('Email ou senha Inválidos');
 
       const userDao = new UserDAO();
       const result = await userDao.getByEmail(data.email);
 
-      if (!result) throw new NotFoundException('Usuario não encontrado');
+      if (!result) throw new NotFoundException('Usuário não encontrado');
 
-      if (data.password !== result.password) throw new InvalidCredentialsException('Email ou senha Invalidos');
+      if (data.password !== result.password) throw new InvalidCredentialsException('Email ou senha Inválidos');
 
       return res.send(result);
     } catch (err) {
