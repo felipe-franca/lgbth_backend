@@ -58,7 +58,8 @@ model State {
 model UsefullyPhone {
   id          Int    @id @default(autoincrement())
   number      String @db.VarChar(14)
-  description String @db.VarChar(40)
+  title       String @db.VarChar(40)
+  description String @db.VarChar(100)
 
   @@map("usefully_phones")
 }
@@ -80,12 +81,12 @@ model Post {
 }
 
 model UserFavoritePosts {
-  id      Int  @id @default(autoincrement())
-  user    User @relation(fields: [user_id], references: [id])
-  user_id Int
-  post    Post @relation(fields: [post_id], references: [id])
-  post_id Int
-  created_at        DateTime            @default(now())
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  post       Post     @relation(fields: [post_id], references: [id])
+  post_id    Int
+  created_at DateTime @default(now())
 
   @@map("user_favorite_posts")
 }
