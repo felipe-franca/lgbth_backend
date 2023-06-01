@@ -17,7 +17,7 @@ class UsefullyPhonesController {
       if (err instanceof NotFoundException) {
         return res.status(err.statusCode).send(err.getErrorResponse());
       } else {
-        return res.status(500).send(err.getErrorResponse());
+        return res.status(500).send({ erroCode: 0, message: 'Internal Server Error' });
       }
     }
   }
