@@ -67,7 +67,7 @@ model UsefullyPhone {
 model Post {
   id                Int                 @id @default(autoincrement())
   banner            String              @db.LongText
-  title             String              @db.VarChar(50)
+  title             String              @db.VarChar(255)
   resume            String              @db.Text
   description       String              @db.VarChar(255)
   short_description String              @db.Text
@@ -75,6 +75,7 @@ model Post {
   category          String              @db.VarChar(15)
   created_at        DateTime            @default(now())
   updatet_at        DateTime            @updatedAt
+  url               String              @db.MediumText
   UserFavoritePosts UserFavoritePosts[]
 
   @@map("posts")

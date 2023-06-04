@@ -3,8 +3,15 @@ import { type Post } from '@prisma/client';
 import { type CreatePostType } from '../types/PostType';
 
 export default class PostsDAO {
-  public async get (): Promise<Post[] | null> {
-    return await PrismaClient.post.findMany();
+  public async getPosts (): Promise<Post[] | null> {
+    return await PrismaClient.post.findMany({
+      where: {
+        type: 'post'
+      },
+      orderBy: {
+        created_at: 'desc'
+      }
+    });
   }
 
   public async getByCategory (category: string): Promise<Post[] | null> {
@@ -26,26 +33,9 @@ export default class PostsDAO {
     });
   }
 
-  public async create ({
-    description,
-    type,
-    category,
-    banner,
-    resume,
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    short_description,
-    title
-  }: CreatePostType): Promise<Post | null> {
+  public async create (data: Post): Promise<Post | null> {
     return await PrismaClient.post.create({
-      data: {
-        banner,
-        type,
-        category,
-        resume,
-        short_description,
-        title,
-        description
-      }
+      data
     });
   }
 
