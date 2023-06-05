@@ -33,6 +33,14 @@ export default class PostsDAO {
     });
   }
 
+  public async getNews (): Promise<Post | null> {
+    return await PrismaClient.post.findFirst({
+      where: {
+        type: 'news'
+      }
+    });
+  }
+
   public async create (data: Post): Promise<Post | null> {
     return await PrismaClient.post.create({
       data
