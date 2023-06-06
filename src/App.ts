@@ -2,6 +2,7 @@ import express, { type Application, json } from 'express';
 import UserRouter from './routes/api/UserRouter';
 import UsefullyPhonesRouter from './routes/api/UsefullyPhonesRouter';
 import PostRouter from './routes/api/PostRouter';
+import FavoritePostRouter from './routes/api/FavoritePostsRouter';
 
 class AppController {
   app: Application;
@@ -21,6 +22,7 @@ class AppController {
     app.use('/user', UserRouter);
     app.use('/usefully-phones', UsefullyPhonesRouter);
     app.use('/posts', PostRouter);
+    app.use('/favorites/posts', FavoritePostRouter);
   }
 }
 
