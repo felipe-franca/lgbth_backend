@@ -27,6 +27,8 @@ class FavoritePostsController {
 
       res.send(result);
     } catch (error) {
+      console.log(error);
+
       if (error instanceof NotFoundException) {
         return res.status(error.statusCode).send(error.getErrorResponse());
       }
