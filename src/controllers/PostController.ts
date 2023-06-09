@@ -83,6 +83,29 @@ class PostController {
       return res.status(500).send({ errorCode: 0, message: 'Internal Server Error' });
     }
   }
+
+  public async getPostById (req: Request, res: Response): Promise<Response | null> {
+    try {
+      const { postId } = req.params;
+      const dao = new PostsDAO();
+
+      const result = await dao.getById(Number(postId));
+
+      if (!result) throw new NotFoundException('Nenhum Post encontrado !');
+
+      const normalizedPost = new PostNormalizer().normalize(result);
+
+      return res.send(normalizedPost);
+    } catch (err) {
+      console.log(err);
+
+      if (err instanceof NotFoundException) {
+        return res.status(err.statusCode).send(err.getErrorResponse());
+      }
+
+      return res.status(500).send({ errorCode: 0, message: 'Internal Server Error !' });
+    }
+  }
 }
 
 export default new PostController();

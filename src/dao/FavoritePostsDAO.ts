@@ -19,4 +19,19 @@ export default class FavoritePostsDAO {
       }
     });
   }
+
+  public async remove (userId: number, postId: number): Promise<any> {
+    const post = await PrismaClient.userFavoritePosts.findFirst({
+      where: {
+        user_id: userId,
+        post_id: postId
+      }
+    });
+
+    return await PrismaClient.userFavoritePosts.delete({
+      where: {
+        id: post?.id
+      }
+    });
+  }
 }

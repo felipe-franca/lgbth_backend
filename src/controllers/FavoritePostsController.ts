@@ -59,6 +59,19 @@ class FavoritePostsController {
       return res.status(500).send({ errorCode: 0, message: 'Internal Server Error' });
     }
   }
+
+  public async unfavoritePost (req: Request, res: Response): Promise<Response | undefined> {
+    try {
+      const { userId, postId } = req.body;
+      const dao = new FavoritePostsDAO();
+      const result = await dao.remove(userId, postId);
+
+      return res.send(result);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ errorCode: 0, message: 'Internal Server Error' });
+    }
+  }
 }
 
 export default new FavoritePostsController();
