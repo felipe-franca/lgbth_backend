@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import UserDAO from '../dao/UserDAO';
 import { type CredentialsType, type CreateUserType, type UpdateUserType } from '../types/UserType';
 import { BadRequestException, InternalServerError, InvalidCredentialsException, NotFoundException } from '../utils/errors/Exceptions';
+import UserNormalizer from '../utils/normalizers/UserNormalizer';
 
 interface UserResponseType {
   id: string | number
@@ -86,7 +87,11 @@ class UserController {
 
       if (data.password !== result.password) throw new InvalidCredentialsException('Email ou senha Inválidos');
 
-      return res.send(result);
+      const normalizedUser = new UserNormalizer().normalize(result);
+
+      console.log(normalizedUser);
+
+      return res.send(normalizedUser);
     } catch (err) {
       if (err instanceof NotFoundException) {
         res.status(err.statusCode).json(err.getErrorResponse());

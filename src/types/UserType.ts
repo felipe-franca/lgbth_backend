@@ -17,3 +17,13 @@ export interface CredentialsType {
   email: string
   password: string
 }
+
+export interface NormalizedUser {
+  avatar: string
+  email: string
+  birthDate?: Date | null
+  age?: number | null
+  name: string
+  password: string
+  id: number
+}
